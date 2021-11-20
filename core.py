@@ -54,17 +54,18 @@ def main():
     sys_handler = MessageHandler(
         Filters.status_update, messagehandlers.empty_message)
     dispatcher.add_handler(sys_handler)
+    verificaImagem = MessageHandler(Filters.photo, messagehandlers.evento)
+    dispatcher.add_handler(verificaImagem)
     dispatcher.add_error_handler(error)
 
-    #updater.start_polling()
-    
+    # updater.start_polling()
 
     logging.info(f'Porta de comunicação {PORT}')
 
     updater.start_webhook(listen="0.0.0.0",
                           port=PORT,
                           url_path=TELEGRAM_TOKEN,
-                         webhook_url='https://bender-opencv.herokuapp.com/' + TELEGRAM_TOKEN)
+                          webhook_url='https://bender-opencv.herokuapp.com/' + TELEGRAM_TOKEN)
     updater.idle()
 
 

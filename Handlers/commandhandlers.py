@@ -5,6 +5,8 @@ import core
 from features import generateOffense
 from features import timeHelper
 
+from eventos.eventos import getArquivos
+
 SO_COOL = "so-cool"
 
 
@@ -30,11 +32,22 @@ def start(update, context):
 
 
 def eventos(update, context):
-    context.bot.send_photo(chat_id=update.effective_chat.id, photo=open("images/420947.jpg", "rb"))
+    arquivos = getArquivos()
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=f"@{update.effective_chat.username} o(s) próximo(s) evento(s)\n\n" +
-                                  "Sem eventos Humanos \n\n" +
                                   "# E vão estudar bando de baderneiros !!")
+    for i in range(len(arquivos)):
+        if arquivos[i]['img'] is not None:
+            context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(arquivos[i]['img'], "rb"),
+                                   caption="Nome: " + arquivos[i]['nome'] + "\nData: " + arquivos[i][
+                                       'data'] + "\nLink: " +
+                                           arquivos[i]['link'])
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Nome: " + arquivos[i]['nome'] + "\nData: " + arquivos[i][
+                                         'data'] + "\nLink: " +
+                                          arquivos[i]['link'])
+
 
 def repo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -50,7 +63,6 @@ def repo(update, context):
                                   "Se eu apresentar mal funcionamento, fale com os idiotas que cuidam da minha manutenção:\n" +
                                   "@ natalia_py, @andreemidio1 , @ TioPerneta e @ hugueds \n\n\n\n" +
                                   "# E vão estudar bando de baderneiros !!")
-
 
 
 def vagas(update, context):
@@ -81,22 +93,22 @@ def mute_(update, context):
     #     return
     # else:
     #     blackListManager.add_member(update.message.from_user.first_name, "mute")
-    
+
     if core.bender_bot.mute:
         pass
     else:
         core.bender_bot.mute = True
-        context.bot.send_message(chat_id=update.effective_chat.id, 
-                                            text= "Ok... Ok... Estou calando a boca!")
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Ok... Ok... Estou calando a boca!")
 
 
 def unmute(update, context):
     if not core.bender_bot.mute:
         pass
-    else:       
+    else:
         core.bender_bot.mute = False
-        context.bot.send_message(chat_id=update.effective_chat.id, 
-                                    text= "I'm back, bitches! Mordam a minha bunda de metal!")
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="I'm back, bitches! Mordam a minha bunda de metal!")
 
 
 def help(update, context):

@@ -1,6 +1,5 @@
 import core
-import re
-from Handlers import dados
+from eventos import eventos
 from config.settings import BOT_NAME
 from features import generateOffensePerson
 
@@ -99,7 +98,7 @@ def echo(update, context):
             chat_id=chat_id,
             text="Herege, usando ruindows ..."
         )
-        
+
 
     elif "puto" in message or "puta" in message:
         context.bot.send_photo(chat_id=chat_id, photo=open(
@@ -128,33 +127,10 @@ def echo(update, context):
         context.bot.send_photo(chat_id=chat_id, photo=open(
             "images/fry_shut_up_and_take_my_money_v2.jpg", "rb"))
 
-    # elif '#evento' in message:
-        #file_id = message.document.file_id
-        #newFile = bot.get_file(file_id)
-        # newFile.download()
-
-        #update.message.reply_text("Image received")
-
-        # dates = re.findall(
-        #    '([1-9]|1[0-9]|2[0-9]|3[0-1]|0[0-9])(.|-|\/)([1-9]|1[0-2]|0[0-9])(.|-|\/)(20[0-9][0-9])', message)
-
-        #dates = [''.join(dates[i]) for i in range(len(dates))]
-
-        # print(dates)
-
-        # pattern = r'(?:#?\b\w\w+\b)'
-        #pattern = re.compile(pattern)
-        #results = pattern.findall(message)
-
-        #novo_texto = " ".join(results[1:-1])
-        # print(novo_texto)
-
-        # data = dict(
-        #    data=dates[0],
-        #    Nome=novo_texto,
-        #    Link=novo_texto)
-
-        #dados.salva('eventos', data)
+    elif '#evento' in message:
+        eventos.salva(message)
+        context.bot.send_message(
+            chat_id=chat_id, text="Certo, meu chapa!")
 
 
 def welcome(update, context, new_member):
@@ -189,3 +165,14 @@ def empty_message(update, context):
     elif update.message.left_chat_member is not None:
         if update.message.left_chat_member.username != BOT_NAME:
             return goodbye(update, context)
+
+
+def evento(update, context):
+    message = update.message.caption.lower()
+    file_id = update.message.photo[2]['file_id']
+    chat_id = update.effective_chat.id
+
+    if "#evento" in message:
+        eventos.salva(message, file_id)
+        context.bot.send_message(
+            chat_id=chat_id, text="Certo, meu chapa!")
