@@ -2,16 +2,17 @@ import json
 import requests
 
 fileLocal = '/home/dudu/Projetos/Python/BenderBot/'
+tokenBot = 'SEU TOKEN'
 
 
 def salva(mensagem, file_id=None):
     localImagem = None
     if file_id is not None:
         request = requests.get(
-            'https://api.telegram.org/bot' + '2077508467:AAFEKBfWZdV-hog1497QBjaFTGx5ljmwjCI' + '/getFile?file_id=' + str(
+            'https://api.telegram.org/bot' + tokenBot + '/getFile?file_id=' + str(
                 file_id))
         pegaId = json.loads(request.content)
-        arquivoUrl = 'https://api.telegram.org/file/bot' + '2077508467:AAFEKBfWZdV-hog1497QBjaFTGx5ljmwjCI' + '/' + \
+        arquivoUrl = 'https://api.telegram.org/file/bot' + tokenBot + '/' + \
                      pegaId['result']['file_path']
         localImagem = fileLocal + 'eventos/imagens/' + str(len(getArquivos())) + '.png'
         imagem = requests.get(arquivoUrl)
